@@ -219,6 +219,7 @@ void fileTransfer(int client_sock) {
 		scanf("%d", &choice);
 		while((cache = getchar()) != '\n' && cache != EOF);
 		// send choice to server
+		memset(buff, 0, sizeof(buff));
 		sprintf(buff, "%d", choice);
 		bytes_sent = send(client_sock, buff, strlen(buff), 0);
 		if(bytes_sent < 0){

@@ -310,16 +310,19 @@ void signOutAccount(Account* root, int conn_sock, int* isLoggedIn) { //not done 
 	int bytes_sent, bytes_received;
 	Account* tmp;
 
+	//fprintf(stderr, "bug0\n");
 	//temporarily use username instead of sessionID
-	bzero(username, 255);
-	bytes_received = recv(conn_sock, username, 256, 0);
+	memset(username, 0, 255);
+	fprintf(stderr, "User log out\n");
+	bytes_received = recv(conn_sock, username, 255, 0);
+	//fprintf(stderr, "bug1");
 	if(bytes_received <= 0) {
-		fprintf(stderr, "Failed to receive username from client. Try again.\n");
+		fprintf(stderr, "Failed to receive sessionID from client. Try again.\n");
 		return;
 	}
 	else 
 		username[bytes_received] = '\0';
-
+	//fprintf(stderr, "bug2");
 	if(strcmp(username, MSG_FALSE) == 0)  //user not sign in so cannot log out
 		return;
 
@@ -397,6 +400,7 @@ void homepage(int sockfd) {
 	//start conversation
 	do{
 		//receives message from client
+		memset(recv_data, 0, BUFF_SIZE);
 		bytes_received = recv(sockfd, recv_data, BUFF_SIZE, 0); //blocking
 		if (bytes_received <= 0){
 			printf("\nConnection closed");

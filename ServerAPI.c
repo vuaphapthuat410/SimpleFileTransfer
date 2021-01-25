@@ -227,6 +227,7 @@ void signOutAccount(int client_sock, int *status, char *sessionID) { // done
 	char buffer[BUFF_SIZE];
 	int bytes_sent, bytes_received;
 
+	sleep(1);// sleep thread to avoid the case when send but have no receiver
 	if(*status == 0) {
 		fprintf(stderr, "Account is not signed in.\n");
 		bytes_sent = send(client_sock, MSG_FALSE, strlen(MSG_FALSE), 0);
@@ -237,12 +238,13 @@ void signOutAccount(int client_sock, int *status, char *sessionID) { // done
 		return;
 	}
 
+	printf("Logging out account.\n");
 	bytes_sent = send(client_sock, sessionID, strlen(sessionID), 0);
 	if (bytes_sent <= 0) {
 		fprintf(stderr, "Failed to signed out. Try again.\n");
 		return;
 	}
-
+	//fprintf(stderr, "receive feedback");
 	bzero(buffer, BUFF_SIZE);
 	bytes_received = recv(client_sock, buffer, BUFF_SIZE, 0);
 	if(bytes_received <= 0) {

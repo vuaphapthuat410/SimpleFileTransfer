@@ -105,6 +105,7 @@ void *echo(void *arg) {
 	//start conversation
 	while(1){
 		//receives message from client
+		memset(recv_data, 0, BUFF_SIZE);
 		bytes_received = recv(sockfd, recv_data, BUFF_SIZE, 0); //blocking
 		if (bytes_received <= 0){
 			printf("\nConnection closed");

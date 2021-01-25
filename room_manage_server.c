@@ -286,6 +286,7 @@ void fileTransfer(int conn_sock, char* path, int permission) {
 	//start conversation
 	do{
 		//receives message from client
+		memset(recv_data, 0, BUFF_SIZE);
 		bytes_received = recv(conn_sock, recv_data, BUFF_SIZE, 0); //blocking
 		if (bytes_received <= 0){
 			printf("\nConnection closed");
